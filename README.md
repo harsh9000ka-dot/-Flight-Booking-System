@@ -1,106 +1,93 @@
-flights = [
-    ["F501", "Mumbai", "Delhi", 40],
-    ["F235", "Delhi", "Bengaluru", 35],
-    ["F675", "Chennai", "Kolkata", 25],
-    ["F543", "Hyderabad", "Pune", 20],
-    ["F765", "Ahmedabad", "Jaipur", 30],
-    ["F897", "Goa", "Chandigarh", 15]
-]
+# Flight Booking System
 
-bookings = []
+## Project Title
 
-def show_flights():
-    print("\nAvailable Flights:")
-    for f in flights:
-        print("Flight:", f[0], "| From:", f[1], "| To:", f[2], "| Seats Left:", f[3])
+Flight Booking System
 
-def get_flght_by_id(flight_id):
-    for f in flights:
-        if f[0] == flight_id:
-            return f
-    return None
 
-def print_ticket(name, flight):
-    print("\nTicket")
-    print("Passenger:", name)
-    print("Flight ID:", flight[0])
-    print("From:", flight[1])
-    print("To:", flight[2])
+##  Overview of the Project
 
-def book_flight():
-    show_flights()
+This project is a basic command-line interface (CLI) application that simulates a flight booking system. It allows a user to interact with a predefined list of flights, check seat availability, book one-way or round-trip tickets, and view a list of all current bookings. All data (flights and bookings) are stored in simple Python lists and are **not persistent**; the data resets every time the program is closed and restarted.
 
-    flight_id = input("Enter the Flight ID for the outbound journey: ")
-    flight = get_flght_by_id(flight_id)
 
-    if not flight:
-        print("Flight not found")
-        return
-    
-    if flight[3] <= 0:
-        print("No seats left on this flight")
-        return
+##  Features
 
-    name = input("Enter your name: ")
+The system provides the following functionalities through its main menu:
 
-    print("\nDo you want a return ticket")
-    print("1. Yes")
-    print("2. No")
-    rt_choice = input("Enter your choice: ")
+* **View Flights (Option 1):** Displays a list of all available flights, including the Flight ID, departure city, destination city, and the current number of available seats.
+* **Book a Flight (Option 2):**
+    * Allows booking of an **outbound** journey.
+    * Checks for flight existence and seat availability.
+    * Prompts the user to book an optional **return** journey immediately after the outbound booking.
+    * Automatically decrements the available seat count upon successful booking.
+    * Prints a formatted ticket confirmation.
+* **View All Bookings (Option 3):** Displays a simple list of all passenger names and the Flight ID associated with their booking(s).
+* **Exit (Option 4):** Closes the application.
 
-    
-    flight[3] -= 1
-    bookings.append([name, flight_id])
-    print("\nOutbound ticket booked")
-    print_ticket(name, flight)
 
-    
-    if rt_choice == "1":
-        show_flights()
-        return_id = input("Enter the Flight ID for the return journey: ")
-        return_flight = get_flght_by_id(return_id)
 
-        if not return_flight:
-            print("Return flight not found")
-            return
-        
-        if return_flight[3] <= 0:
-            print("No seats left on the return flight")
-            return
+##  Technologies/Tools Used
 
-        
-        return_flight[3] -= 1
-        bookings.append([name, return_id])
-        print("Return ticket booked")
-        print_ticket(name, return_flight)
+* **Language:** Python 3
+* **Tools:** Standard Python interpreter (No external libraries required)
 
-def view_bookings():
-    if len(bookings) == 0:
-        print("\nNo bookings yet")
-    else:
-        print("\nAll Bookings:")
-        for b in bookings:
-            print("Passenger:", b[0], "| Flight:", b[1])
 
-def main():
-    while True:
-        print("\nFlight Booking System")
-        print("1. View Flights")
-        print("2. Book a Flight")
-        print("3. View All Bookings")
-        print("4. Exit")
-        choice = input("Choose an option: ")
 
-        if choice == "1":
-            show_flights()
-        elif choice == "2":
-            book_flight()
-        elif choice == "3":
-            view_bookings()
-        elif choice == "4":
-            print("Thank you for using the Flight Booking System")
-            break
-        else:
-            print("Invalid choice, try again")
+## Steps to Install & Run the Project
 
-main()
+### Prerequisites
+
+You must have **Python 3** installed on your system. You can download it from [python.org](https://www.python.org/downloads/).
+
+### Installation and Execution
+
+1.  **Save the Code:** Copy the entire Python script (including the `flights` list, `bookings` list, and all defined functions) and save it to a file named `flight_booking.py` (or any `.py` extension).
+2.  **Open Terminal:** Navigate to the directory where you saved the file using your command line or terminal.
+3.  **Run the Application:** Execute the script using the Python interpreter:
+
+    ```bash
+    python flight_booking.py
+    ```
+
+4.  **Interaction:** The system's main menu will be displayed. Enter the number corresponding to the action you wish to perform (1, 2, 3, or 4).
+
+
+
+##  Instructions for Testing
+
+Follow these steps to test the core functionalities of the system:
+
+### 1. Test Viewing Flights
+
+1.  Start the application.
+2.  Choose option **1** (**View Flights**).
+3.  **Expected Outcome:** A list of all six initial flights should be displayed, and all should show their full initial capacity (e.g., F501 with 40 seats).
+
+### 2. Test Booking a One-Way Flight
+
+1.  Choose option **2** (**Book a Flight**).
+2.  Enter a valid Flight ID (e.g., `F501`).
+3.  Enter your name (e.g., `Alice`).
+4.  Choose option **2** for the return ticket (**No**).
+5.  Choose option **1** (**View Flights**) again.
+6.  **Expected Outcome:**
+    * A ticket for Alice on F501 should be printed.
+    * When viewing flights, F501 should now show **39** seats left.
+
+### 3. Test Booking a Round-Trip Flight
+
+1.  Choose option **2** (**Book a Flight**).
+2.  Enter a valid outbound Flight ID (e.g., `F235`).
+3.  Enter your name (e.g., `Bob`).
+4.  Choose option **1** for the return ticket (**Yes**).
+5.  Enter a valid return Flight ID (e.g., `F501`).
+6.  Choose option **3** (**View All Bookings**).
+7.  **Expected Outcome:**
+    * Tickets for Bob on F235 and F501 should be printed.
+    * In the View All Bookings list, there should be two entries for Bob: one for `F235` and one for `F501`.
+
+### 4. Test Booking on a Full Flight
+
+1.  **To set up the test:** Keep booking seats on a single flight (e.g., F897 which has 15 seats) until its seat count is **0**.
+2.  Attempt to book another seat on that now-full flight (e.g., `F897`).
+3.  **Expected Outcome:** The system should print the message **"No seats left on this flight"** and block the booking.
